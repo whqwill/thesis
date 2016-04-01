@@ -1,0 +1,80 @@
+\chapter{Word Embedding}
+\label{cha:embedi}
+
+\section{Introduction}
+
+\subsection{Word2vec and distributional semantics}
+Word2vec is closely related to earlier (non-neural-net) approaches\\
+
+Don\rq t count, predict! A systematic comparison of context-counting vs. context-predicting semantic vectors (Baroni et al, 2014)\\
+
+Word2vec found better on average \& more robust than DS techniques (Baroni et al, 2014\\
+
+Neural word embedding as implicit matrix factoriza5on (Levy \& Goldberg, 2014) \\
+
+Glove: Global Vectors for Word Representa5on (Pennington et al, 2014)\\
+
+Main findings: the word2vec \lq\lq trick\rq\rq can be ported back to the traditional DS techniques\\
+
+\subsection{And some controversy}
+Glove: Global Vectors for Word Representa5on (Pennington et al, 2014)\\
+
+Richard Socher: \lq\lq Glove 11\% better on word analogies than ord2vec!!!\rq\rq\\
+
+Goldberg: \lq\lq at least train the models on the same data \ldots\rq\rq\\
+\\
+
+In the end, Glove performs usually slightly worse than word2vec when both are well-tuned, and word2vec is faster \& way more memory efficient: Improving distributional similarity with lessons learned from word embeddings (Levy et al, 2015) 
+
+\subsection{Distributed sparse representations}
+Word2vec: translates 1-of-N representations into D-dimensional continuous vectors\\
+
+The continuous vectors can be translated back into sparse vectors again, efficiently forming M-of-N codes: can be useful in time-critical applications\\
+
+Can be achieved with random projections + quantization or max() function\\
+
+
+%--------------------------------------------------------------------------------------------------------------------------------%
+
+\section{Skip-gram model}
+
+
+\textbf{Objective function:}\\
+
+Giving a sequence of training words $w_1,w_2,w_3,\ldots,w_T$, the objective of the Skip-gram model is to maximize the average log probability 
+
+$$\mathrm{G}=\frac{1}{T}\sum_{t=1}^T\sum_{-c\leq j\leq c,j\neq0}\mathrm{log}\ p(w_{t+j}|w_t)$$ 
+
+where $c$ is the size of the training context. \\
+
+\subsection{Softmax function}
+
+The basic Skip-gram formulation defines $p(w_{t+j}|w_t)$ using the softmax function 
+
+$$p(w_O|w_I)=\frac{\mathrm{exp}({U_{w_O}}^{\rm T}V_{w_I})}{\sum_{w=1}^W\mathrm{exp}({U_{w_O}}^{\rm T}V_{w_I})}$$ 
+
+where $V_w$ and $U_w$ are the \lq\lq input\rq\rq\ and \lq\lq output\rq\rq\ vector representations of $w$, and $W$ is the number of words in the vocabulary.
+$\nabla\mathrm{log}\ p(w_O|w_I)$ is proportional to $W$, which is often large ($10^5-10^7$ terms).\\
+
+\subsection{Hierarchical Softmax}
+
+It is needed to evaluate only about $\mathrm{log}_2(W)$ nodes.\\
+
+Let $n(w,j)$ be the $j$-th node on the path from the root to $w$, and let $L(w)$ be the length of this path, so $n(w,1)$ = $\mathrm{root}$ and $n(w,L(w)) = w$. In addition, for any inner node $n$, let $ch(n)$ be an arbitrary fixed child of $n$ and let $[x]$ be $1$ if $x$ is true and $-1$ otherwise. Then the hierarchical softmax defines $p(w_O|w_I)$ as follows:
+
+$$p(w_O|w_I)=\prod_{j=1}^{L(w)-1}\sigma\left(\left[n(w_O,j+1)=ch(n(w_O,j))\right]\cdot {U_{n(w_O,j)}}^{\rm T}V_{w_I}\right)$$
+
+where $\sigma(x) = 1/(1+\mathrm{exp}(-x))$. It can be verified that $\sum_{w=1}^W p(w|w_I)=1$. This implies that that cost of computing $\mathrm{log}\ p(w_O|w_I)$ and $\nabla\mathrm{log}\ p(w_O|w_I)$ is proportional to $L(w_O)$, which on average is no greater than $\mathrm{log}\ W$.
+
+\subsection{Negative Sampling}
+
+An alternative to the hierarchical softmax is Noise Contrastive Estimation (NCE). NCE can be shown to approximately maximize the log probability of the softmax. We define Negative sampling (NEG) by the objective
+
+$$p(w_O|w_I)=\mathrm{log}\ \sigma({U_{w_O}}^{\rm T}V_{w_I})+\sum_{i=1}^k\mathbb{E}_{w_i\sim P_n(w_O)}\left[\mathrm{log}\ \sigma(-{U_{w_i}}^{\rm T}V_{w_I})\right]$$
+
+which is used to replace every $\mathrm{log}\ P(w_O|w_I)$ term in the Skip-gram objective. Thus the task is to distinguish the target word $w_O$ from the noise distribution $P_n(w)$ using logistic regression, where there are $k$ negative samples for each data sample. Values of $k$ in the range 5-20 are useful for small training datasets, while for large datasets the $k$ can be as small as 2-5.\\
+
+The main difference between the Negative sampling and NCE is that NCE needs both samples and the numerical probabilities of the noise distribution, while Negative sampling uses only samples.\\
+
+Both NCE and NEG have the noise distribution $P_n(w)$ as a free parameter.
+
