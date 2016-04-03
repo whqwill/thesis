@@ -3,13 +3,13 @@
 
 \section{Prerequisites}
 
-This section will introduce some important knowledges, including sigmoid function, Bayes Formula and Huffman code etc.
+This section will introduce some important knowledges, including sigmoid function, Bayes Formula, Huffman code, etc.
 
 \subsection{Sigmoid Function}
 
-Sigmoid Function is a common kind of active function, the definition is
+Sigmoid function is a common kind of active function, the definition is
 
-$$ \sigma(x) = \frac{1}{1+e^{-x}} $$,
+$$ \sigma(x) = \frac{1}{1+e^{-x}}, $$
 
 The domain is $(-\infty, \infty)$, the range is $(0,1)$.
 
@@ -23,11 +23,17 @@ The domain is $(-\infty, \infty)$, the range is $(0,1)$.
 \end{minipage}
 \end{figure}
 
-sigmoid function has the \textbf{}
+Sigmoid function has the \textbf{derivative function} as following:
 
-\subsection{And some controversy}
+$$ \sigma^\prime(x) = \sigma(x)[1-\sigma(x)], $$
 
+Thus, the \textbf{derivative functions} of $\mathrm{log}\sigma(x)$ and $\mathrm{log}(1-\sigma(x))$ are respectively
 
+$$ [\mathrm{log}\sigma(x)]^\prime = 1-\sigma(x), \ [\mathrm{log}(1-\sigma(x))]^\prime = -\sigma(x), $$
+
+\subsection{Logistic Regression}
+
+Binary classification is a very common task, e.g. , if an email is spam, if a customer is a potential customer, if a online transaction fraud, etc. 
 
 %--------------------------------------------------------------------------------------------------------------------------------%
 
