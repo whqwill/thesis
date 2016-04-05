@@ -75,18 +75,22 @@ A \textbf{Binary tree} is an ordered tree in which each node has at most two sub
 
 Giving $n$ weights as weights of $n$ leaf nodes, one can build a binary tree. From all built trees, the one with the smallest path length with weight is called \textbf{Optimal Binary Tree}, which is also named \textbf{Huffman Tree}.
 \subsubsection{Huffman Tree Construction}
-Giving $n$ weights $\{w_1,w_2,\cdots,w_n\}$ as $n$ leaf nodes, one can build a Huffman tree as the following algorithm.\\
-
-\noindent \ \ \ \textbf{Algorithm 2.1} (\emph{Huffman Tree} Construction)
+Giving $n$ weights $\{w_1,w_2,\cdots,w_n\}$ as $n$ leaf nodes, one can build a Huffman tree as the following algorithm.
+\paragraph{Algorithm 2.1}(\emph{Huffman Tree} Construction)
 \begin{enumerate}
 \item Consider $\{w_1,w_2,\cdots,w_n\}$ as root weights of $n$ trees in a forest (each tree has only one node).
 \item Select the two trees in the forest with the smallest root weight, and combine them to be a new tree. These two trees are the left and right sub-trees of the new tree, and the root weight of the new tree is the sum of root weights of its sub-trees.
 \item Remove above two trees from the forest, and add the new tree into the forest.
 \item Repeat Step 2 and Step 3, until there is only one tree in the forest. Such tree is the \emph{Huffman Tree}.
 \end{enumerate}
+\paragraph{Example 2.1} Assuming in one news words \lq\lq I\rq\rq\ \lq\lq don't\rq\rq\ \lq\lq have\rq\rq\ \lq\lq putting\rq\rq\ \lq\lq money\rq\rq\ \lq\lq in\rq\rq\ \lq\lq my\rq\rq\ \lq\lq bank\rq\rq\ \lq\lq account\rq\rq\ appear respectively 5, 7, 20, 14, 6, 3, 16, 5, 10 times. One can build an \emph{Huffman Tree} with these 9 words as leaf nodes, and use word frequencies to be the weights of nodes.
 
-The following example is about Algorithm 2.1.
+Figure... shows the construction of the \emph{Huffman Tree}. From above, we can know that \textbf{the word with greater frequency is closer to the root node}. During the construction, new nodes after combination are marked blue. If there are $n$ leaf nodes, there will be $n-1$ new nodes in the built \emph{Huffman Tree}. In above example $n=6$, thus the number of new nodes is $5$. 
+
+Note that, two sub binary trees is left and right, for a non-leaf node, it is its child nodes is two minutes.
 \subsubsection{Huffman Coding}
+In data communication, it is necessary to transfer the text into a binary string. One can use different permutations of 0,1 code to represent characters. For example, 
+
 
 %--------------------------------------------------------------------------------------------------------------------------------%
 
